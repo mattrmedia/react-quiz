@@ -13,7 +13,19 @@ export default class Question extends React.Component {
       image: data[0].image,
       question: data[0].question,
       solutions: data[0].solutions,
+      answer: data[0].answer,
     };
+    this.checkSolution = this.checkSolution.bind(this);
+  }
+
+  checkSolution(e) {
+    const solution = e.target.previousSibling.value;
+    if (solution === this.state.answer) {
+      this.setState({
+        type: 'Correct',
+        question: data[0].explanation,
+      });
+    }
   }
 
   render() {
@@ -24,7 +36,7 @@ export default class Question extends React.Component {
           <Type type={ this.state.type } />
           <QuestionText question={ this.state.question } />
         </div>
-        <Solutions solutions={ this.state.solutions } />
+        <Solutions solutions={ this.state.solutions } checkSolution={this.checkSolution} />
       </div>
     )
   }
