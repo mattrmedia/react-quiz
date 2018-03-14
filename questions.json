@@ -10,5 +10,14 @@
     "Baby don't hurt me"
   ],
   "image": "https://placeimg.com/480/480/people",
-  "explanation": "So what is right and what is wrong. <strong>Gimme a sign</strong>",
+  "explanation": "So what is right and what is wrong. Gimme a sign.",
+},
+{
+  "id": "2",
+  "type": "True or False:",
+  "question": "Is the airspeed velocity of an unladen swallow 11 meters per second?",
+  "answer": "true",
+  "solutions": ["true", "false"],
+  "image": "https://placeimg.com/480/480/people",
+  "explanation": "Let's not go to Camelot. It is a silly place."
 }]

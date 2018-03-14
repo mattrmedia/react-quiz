@@ -4,7 +4,7 @@ import Question from './components/Question';
 import './index.scss';
 
 const App = () => (
-  <div className="App">
+  <div className="app">
     <Question />
   </div>
 );
