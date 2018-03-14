@@ -1,24 +1,14 @@
-# React Parcel Example
+# React Quiz Example
 
-A minimum viable React app with [Parcel Bundler](https://parceljs.org)
-
-**What's inside?**
-
-* `parcel-bundler`
-* `react`
-* `react-dom`
-* `babel-preset-react-app`
-* `autoprefixer`
-
-> Also [checkout out the TypeScript branch](https://github.com/jaredpalmer/react-parcel-example/tree/typescript)
+A minimum viable React quiz thanks to Jared Palmer and [Parcel Bundler](https://parceljs.org) 
 
 ## Getting started
 
 Clone and install deps
 
 ```
-git clone git@github.com:jaredpalmer/react-parcel-example.git
-cd react-parcel-example
+git clone git@github.com:mattrmedia/react-quiz.git
+cd react-quiz
 yarn
 yarn start
 ```
@@ -43,34 +33,3 @@ I've included `autoprefixer` for vendor prefixing with the same setup as
 If you'd rather keep your PostCSS setup in a dotfile, you can delete the
 `postcss` key from `package.json`, and place its contents in a `.postcssrc` file
 too.
-
-## Folder structure and relative paths
-
-Keeping everything in the root directory obviously won't scale past a point.
-Parcel is very flexible about folder structure, but there are a few gotchas.
-
-### Moving JS entry
-
-When you do move index.js just make sure to update the `<script>` tag in
-`index.html` so that it points to the correct relative path.
-
-For example, if you want to move `index.js` to `src/index.js`, you would need
-make the following change to `index.html`:
-
-```
-<   <script src="./index.js"></script>
----
->   <script src="./src/index.js"></script>
-```
-
-### Moving `index.html`
-
-If you want to move `index.html`, you will need to update your npm scripts in
-`package.json` with the new relative path.
-
-## Deployment
-
-Refer to the deployment guide in `create-react-app`, just note that you will
-need to account for the fact that Parcel builds out to a `dist` directory, while
-CRA builds to a `build` directory. You can make it identical by adding
-`--out-dir build` to both `start` and `build` npm tasks in `package.json`.
