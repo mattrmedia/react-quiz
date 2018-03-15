@@ -16,6 +16,8 @@ export default class Question extends React.Component {
       isVisible: true,
       result: 0,
       style: 'default',
+      answered: false,
+      resultText: '',
     };
 
     this.checkSolution = this.checkSolution.bind(this);
@@ -29,6 +31,7 @@ export default class Question extends React.Component {
       state.index = index;
       state.isVisible = true;
       state.style = 'default';
+      state.answered = false;
       this.setState({ ...state });
     } else {
       alert("You're all done. You got " + this.state.result + " correct!")
@@ -44,35 +47,36 @@ export default class Question extends React.Component {
   checkSolution(e) {
     const solution = e.target.previousSibling.value;
     const { index } = this.state
-    const { explanation, answer } = this.state.data[index];
+    const { answer } = this.state.data[index];
     let state = { ...this.state };
 
     if (solution === answer) {
-      state.data[index].type = 'Correct!';
-      state.data[index].question = explanation;
+      state.resultText = 'Correct!';
       state.isVisible = false;
       state.style = true;
+      state.answered = true;
       this.setState({ ...state });
       this.incrementResult();
     } else {
-      state.data[index].type = 'Incorrect!';
-      state.data[index].question = explanation;
+      state.resultText = 'Incorrect!';
       state.isVisible = false;
       state.style = false;
+      state.answered = true;
       this.setState({ ...state });
     }
   }
 
   render() {
-    const { style, isVisible, index } = this.state;
-    const { image, type, solutions, question } = this.state.data[index];
+    const { style, isVisible, index, resultText, answered  } = this.state;
+    const { image, type, solutions, question, explanation } = this.state.data[index];
+    console.log(this.state)
     return (
       <div>
         <div className="quiz__question">
           <Image image={image} />
           <div className="question__text">
-            <Type type={type} style={style}/>
-            <QuestionText question={question} />
+            <Type type={type} style={style} resultText={resultText} answered={answered} />
+            <QuestionText question={question} explanation={explanation} answered={answered} />
           </div>
         </div>
         { isVisible && <Solutions solutions={solutions} checkSolution={this.checkSolution} /> }
