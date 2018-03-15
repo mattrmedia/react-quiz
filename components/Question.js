@@ -49,19 +49,17 @@ export default class Question extends React.Component {
     const { index } = this.state
     const { answer } = this.state.data[index];
     let state = { ...this.state };
+    state.answered = true;
+    state.isVisible = false;
 
     if (solution === answer) {
       state.resultText = 'Correct!';
-      state.isVisible = false;
       state.style = true;
-      state.answered = true;
       this.setState({ ...state });
       this.incrementResult();
     } else {
       state.resultText = 'Incorrect!';
-      state.isVisible = false;
       state.style = false;
-      state.answered = true;
       this.setState({ ...state });
     }
   }
@@ -69,7 +67,6 @@ export default class Question extends React.Component {
   render() {
     const { style, isVisible, index, resultText, answered  } = this.state;
     const { image, type, solutions, question, explanation } = this.state.data[index];
-    console.log(this.state)
     return (
       <div>
         <div className="quiz__question">
