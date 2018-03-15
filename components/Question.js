@@ -58,7 +58,7 @@ export default class Question extends React.Component {
       state.data[index].type = 'Incorrect!';
       state.data[index].question = explanation;
       state.isVisible = false;
-      state.style = true;
+      state.style = false;
       this.setState({ ...state });
     }
   }
