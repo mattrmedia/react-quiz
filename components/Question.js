@@ -10,9 +10,9 @@ export default class Question extends React.Component {
 
   constructor(props) {
     super(props);
-    this.index = 0;
     this.state = {
-      data: data[this.index],
+      index: 0,
+      data: data,
       isVisible: true,
       result: 0,
       style: 'default',
@@ -22,14 +22,14 @@ export default class Question extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
-  nextQuestion(e) {
-    this.index += 1;
-    if (this.index < data.length) {
-      this.setState({
-        data: data[this.index],
-        isVisible: true,
-        style: 'default',
-      });
+  nextQuestion() {
+    const index = this.state.index + 1;
+    let state = { ...this.state };
+    if (index < data.length) {
+      state.index = index;
+      state.isVisible = true;
+      state.style = 'default';
+      this.setState({ ...state });
     } else {
       alert("You're all done. You got " + this.state.result + " correct!")
     }
@@ -43,47 +43,40 @@ export default class Question extends React.Component {
 
   checkSolution(e) {
     const solution = e.target.previousSibling.value;
-    const trueState = {
-      data: {
-        type: 'Correct!',
-        question: this.state.data.explanation,
-        image: this.state.data.image,
-      },
-      isVisible: false,
-      style: true,
-    };
+    const { index } = this.state
+    const { explanation, answer } = this.state.data[index];
+    let state = { ...this.state };
 
-    const falseState = {
-      data: {
-        type: 'Incorrect!',
-        question: this.state.data.explanation,
-        image: this.state.data.image,
-      },
-      isVisible: false,
-      style: false,
-    };
-
-    if (solution === this.state.data.answer) {
-      this.setState({ ...this.state, ...trueState });
+    if (solution === answer) {
+      state.data[index].type = 'Correct!';
+      state.data[index].question = explanation;
+      state.isVisible = false;
+      state.style = true;
+      this.setState({ ...state });
       this.incrementResult();
     } else {
-      this.setState({ ...this.state, ...falseState });
-
+      state.data[index].type = 'Incorrect!';
+      state.data[index].question = explanation;
+      state.isVisible = false;
+      state.style = true;
+      this.setState({ ...state });
     }
   }
 
   render() {
+    const { style, isVisible, index } = this.state;
+    const { image, type, solutions, question } = this.state.data[index];
     return (
       <div>
         <div className="quiz__question">
-          <Image image={this.state.data.image} />
+          <Image image={image} />
           <div className="question__text">
-            <Type type={this.state.data.type} style={this.state.style}/>
-            <QuestionText question={this.state.data.question} />
+            <Type type={type} style={style}/>
+            <QuestionText question={question} />
           </div>
         </div>
-        { this.state.isVisible && <Solutions solutions={this.state.data.solutions} checkSolution={this.checkSolution} /> }
-        { !this.state.isVisible && <Button text="Next" nextQuestion={this.nextQuestion} /> }
+        { isVisible && <Solutions solutions={solutions} checkSolution={this.checkSolution} /> }
+        { !isVisible && <Button text="Next" nextQuestion={this.nextQuestion} /> }
       </div>
     )
   }
