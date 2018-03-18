@@ -10,26 +10,29 @@ export default class Question extends React.Component {
 
   constructor(props) {
     super(props);
-    this.index = 0;
     this.state = {
-      data: data[this.index],
+      index: 0,
+      data: data,
       isVisible: true,
       result: 0,
       style: 'default',
+      answered: false,
+      resultText: '',
     };
 
     this.checkSolution = this.checkSolution.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
-  nextQuestion(e) {
-    this.index += 1;
-    if (this.index < data.length) {
-      this.setState({
-        data: data[this.index],
-        isVisible: true,
-        style: 'default',
-      });
+  nextQuestion() {
+    const index = this.state.index + 1;
+    let state = { ...this.state };
+    if (index < data.length) {
+      state.index = index;
+      state.isVisible = true;
+      state.style = 'default';
+      state.answered = false;
+      this.setState({ ...state });
     } else {
       alert("You're all done. You got " + this.state.result + " correct!")
     }
@@ -43,47 +46,38 @@ export default class Question extends React.Component {
 
   checkSolution(e) {
     const solution = e.target.previousSibling.value;
-    const trueState = {
-      data: {
-        type: 'Correct!',
-        question: this.state.data.explanation,
-        image: this.state.data.image,
-      },
-      isVisible: false,
-      style: true,
-    };
+    const { index } = this.state
+    const { answer } = this.state.data[index];
+    let state = { ...this.state };
+    state.answered = true;
+    state.isVisible = false;
 
-    const falseState = {
-      data: {
-        type: 'Incorrect!',
-        question: this.state.data.explanation,
-        image: this.state.data.image,
-      },
-      isVisible: false,
-      style: false,
-    };
-
-    if (solution === this.state.data.answer) {
-      this.setState({ ...this.state, ...trueState });
+    if (solution === answer) {
+      state.resultText = 'Correct!';
+      state.style = true;
+      this.setState({ ...state });
       this.incrementResult();
     } else {
-      this.setState({ ...this.state, ...falseState });
-
+      state.resultText = 'Incorrect!';
+      state.style = false;
+      this.setState({ ...state });
     }
   }
 
   render() {
+    const { style, isVisible, index, resultText, answered  } = this.state;
+    const { image, type, solutions, question, explanation } = this.state.data[index];
     return (
       <div>
         <div className="quiz__question">
-          <Image image={this.state.data.image} />
+          <Image image={image} />
           <div className="question__text">
-            <Type type={this.state.data.type} style={this.state.style}/>
-            <QuestionText question={this.state.data.question} />
+            <Type type={type} style={style} resultText={resultText} answered={answered} />
+            <QuestionText question={question} explanation={explanation} answered={answered} />
           </div>
         </div>
-        { this.state.isVisible && <Solutions solutions={this.state.data.solutions} checkSolution={this.checkSolution} /> }
-        { !this.state.isVisible && <Button text="Next" nextQuestion={this.nextQuestion} /> }
+        { isVisible && <Solutions solutions={solutions} checkSolution={this.checkSolution} /> }
+        { !isVisible && <Button text="Next" nextQuestion={this.nextQuestion} /> }
       </div>
     )
   }
