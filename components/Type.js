@@ -1,24 +1,11 @@
 import React from 'react';
 
-const Type = (props) => {
-  let style = 'type';
-  let text = '';
+const styleEnum = {
+  default: 'type',
+  false: 'type type--incorrect',
+  true: 'type type--correct',
+};
 
-  if (props.style === true) {
-    style += ' type--correct';
-  } else if (props.style === false) {
-    style += ' type--incorrect';
-  } else {
-    style;
-  }
-
-  if (props.answered === true) {
-    text = props.resultText;
-  } else {
-    text = props.type;
-  }
-
-  return <h1 className={style}>{text}</h1>;
-}
+const Type = props => <h1 className={ styleEnum[props.style] }>{ props.answered ? props.resultText : props.type }</h1>;
 
 export default Type;
